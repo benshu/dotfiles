@@ -1,0 +1,21 @@
+---
+TERM: alacritty
+startup_mode: Windowed
+class:
+  instance: Alacritty
+  general: Alacritty
+history: 100000
+multiplier: 3
+normal:
+  family: Fira Mono
+  style: Regular
+bold:
+  family: Fira Mono
+  style: Bold
+italic:
+  family: Fira Mono
+  style: Bold Italic
+use_thin_strokes: true
+
+import:
+  - .config/alacritty/dracula.yml

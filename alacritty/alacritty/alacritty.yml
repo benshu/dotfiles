@@ -1,0 +1,41 @@
+---
+env:
+  TERM: alacritty-direct
+startup_mode: Windowed
+window:
+  class:
+    instance: Alacritty
+    general: Alacritty
+  decorations: Full
+scrolling:
+  history: 100000
+  multiplier: 3
+font:
+  # normal:
+  #   family: FiraCode Nerd Font Mono
+  #   style: Light
+  # bold:
+  #   family: FiraCode Nerd Font Mono
+  #   style: Bold
+  # italic:
+  #   family: FiraCode Nerd Font Mono
+  #   style: Bold Italic
+  normal:
+    family: Hack Nerd Font
+    style: Regular
+  size: 14.0
+  use_thin_strokes: true
+  scale_with_dpi: true
+
+mouse:
+  url:
+    launcher:
+      program: open
+    modifiers: Command
+
+debug:
+  log_level: info
+  persistent_logging: true
+
+import:
+  - ~/.config/alacritty/dracula.yml
