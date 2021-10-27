@@ -1,0 +1,105 @@
+profzsh() {
+  shell=${1-$SHELL}
+  ZPROF=true $shell -i -c exit
+}
+
+gch() {
+ git checkout $(git branch --all | fzf | tr -d '[:space:]')
+}
+
+function mdtohtml() {
+    if [ $# -eq 0 ]; then
+        printf ".md filename required";
+    else
+    pandoc "$1" --css ~/Documents/pandoc.css -s -o "$1.html" && xdg-open "$1.html"
+    fi
+}
+
+# lint the diff to the selected branch
+function lintdiff() {
+    git diff --name-only "$1" | grep "\.py" | parallel xargs -n 1 flake8 | grep -v -e "__init__.py.*F401"
+}
+
+# Copy last command to clipboard
+# cl() { history -p 'cat ~/.bash_profile '|tr -d \n|pbcopy; }
+function cl() { 
+    history -p '!!'|tr -d \\n|pbcopy; 
+}
+
+# Show 255 colors options
+function show_colors() { 
+    for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f"
+}
+
+#LaTeX file compile with simple settings
+function mklatex() {
+    if [ $# -eq 0 ]; then
+        printf ".tex filename required";
+    else
+        xelatex -synctex=on -interaction=nonstopmode "$@";
+    fi;
+}
+
+# Markdown please - get markdown of html page from url
+function md_please() {
+    curl http://markdownplease.com/\?url\=$@
+}
+
+# Clean exited docker containers
+function docker_clean() {
+    docker rm -v $(docker ps -a -q -f status=exited)
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+    if du -b /dev/null > /dev/null 2>&1; then
+        local arg=-sbh;
+    else
+        local arg=-sh;
+    fi
+    if [[ -n "$@" ]]; then
+        du $arg -- "$@";
+    else
+        du $arg .[^.]* *;
+    fi;
+}
+
+# Use Git’s colored diff when available
+hash git &>/dev/null;
+if [ $? -eq 0 ]; then
+    function diff() {
+        git diff --no-index --color-words "$@";
+    }
+fi;
+
+# Create a data URL from a file
+function dataurl() {
+    local mimeType=$(file -b --mime-type "$1");
+    if [[ $mimeType == text/* ]]; then
+        mimeType="${mimeType};charset=utf-8";
+    fi
+    echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
+}
+
+# Run `dig` and display the most useful info
+function digga() {
+    dig +nocmd "$1" any +multiline +noall +answer;
+}
+
+# `v` with no arguments opens the current directory in Vim, otherwise opens the
+# given location
+function v() {
+    if [ $# -eq 0 ]; then
+        $EDITOR .;
+    else
+        $EDITOR "$@";
+    fi;
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+function tre() {
+    tree -aC -I '.git|node_modules|__pycache__' --dirsfirst "$@" | less -FRNX;
+}
