@@ -1,3 +1,5 @@
+# Bypass htop issues with tmux-256color
+alias htop="TERM=xterm-256color htop"
 alias act="source ./.venv/bin/activate"
 
 # Easier navigation: .., ..., ...., ....., ~ and -
