@@ -23,7 +23,8 @@ git clone git@github.com:benshu/dotfiles.git
 
 1. Install Applications Using Homebrew
 ```
-HOMEBREW_CASK_OPTS="--no-quarantine" brew bundle install --file ./setup/macos/Brewfile
+ln -s $PWD/setup/macos/Brewfile ~/.Brewfile
+HOMEBREW_CASK_OPTS="--no-quarantine" brew bundle install --file ~/.Brewfile
 ```
 
 1. Setup Shell and Terminal 
@@ -43,15 +44,14 @@ Compile tmux terminfo using:
 ```
 
 1. Link dotfiles using stow
+For most applications `stow` is used to link the configuration files to the proper location.
 ```
 stow alacritty -t ~/.config/
 stow bash -t ~/
 stow git -t ~/.config/
 stow htop -t ~/.config/
 stow nvim -t ~/.config/
-stow pyls -t ~/.config/
 stow ranger -t ~/.config/
-mkdir ~/scripts stow scripts -t ~/scripts/
 stow shell -t ~
 stow tmux -t ~/.config/ && ln -s ~/.config/tmux/tmux.conf ~/.tmux.conf
 stow yapf -t ~/.config/
