@@ -17,7 +17,12 @@
     precomposeunicode = false
 
     editor = 'nvim'
-   pager = diff-so-fancy | less --tabs=4 -RFX
+    pager = diff-so-fancy | less --tabs=4 -RFX
+
+	# Speed up some repositories.
+	commitGraph = true
+	# Output unicode characters (e.g. emoji).
+	quotepath = on
 
 [diff]
    tool = meld
@@ -25,6 +30,12 @@
 [merge]
     tool = nvimmerge
     conflictstyle = diff3
+	# Don't prompt before opening the merge tool.
+	prompt = false
+	# Don't keep backups of the merge tool inputs.
+	keepBackup = false
+	# Don't keep the merge tool temporary input/output files.
+	keepTemporaries = false
 
 [mergetool "nvimmerge"]
     cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
@@ -39,70 +50,48 @@
     difftex = difftool -y -t latex
     # View abbreviated SHA, description, and history graph of the latest 20 commits
     l = log --pretty=oneline -n 20 --graph --abbrev-commit
-
     lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
-
     lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
-
     lg = !"git lg1"
-
     # View the current working tree status using the short format
     s = status -s
-
     # Show the diff between the latest commit and the current state
     d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
-
     # `git di $number` shows the diff between the state `$number` revisions ago and the current state
     di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
-
     # Pull in remote changes for the current repository and all its submodules
     p = !"git pull; git submodule foreach git pull origin master"
-
     # Clone a repository including all submodules
     c = clone --recursive
-
     # Commit all changes
     ca = !git add -A && git commit -av
-
     # Switch to a branch, creating it if necessary
     go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
-
     # Show verbose output about tags, branches or remotes
     tags = tag -l
     branches = branch -a
     remotes = remote -v
-
     # Amend the currently staged files to the latest commit
     amend = commit --amend --reuse-message=HEAD
-
     # Credit an author on the latest commit
     credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
-
     # Interactive rebase with the given number of latest commits
     reb = "!r() { git rebase -i HEAD~$1; }; r"
-
     # Remove the old tag with this name and tag the latest commit with it.
     retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
-
     # Find branches containing commit
     fb = "!f() { git branch -a --contains $1; }; f"
-
     # Find tags containing commit
     ft = "!f() { git describe --always --contains $1; }; f"
-
     # Find commits by source code
     fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
-
     # Find commits by commit message
     fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
-
     # Remove branches that have already been merged with master
     # a.k.a. ‘delete merged’
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
-
     # List contributors with number of commits
     contributors = shortlog --summary --numbered
-
     # Merge GitHub pull request on top of the current branch or,
     # if a branch name is specified, on top of the specified branch
     mpr = "!f() { \
@@ -118,6 +107,17 @@
             git commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \
         fi \
     }; f"
+	# Merge a branch with a merge commit and resolve any conflicts
+	# always using that branch's version rather than the current branch.
+	theirs = !git noff -Xtheirs
+	# Get the current diff but show differences between characters
+	# instead of just the differences between lines.
+	word-diff = diff --word-diff
+
+	# Commit a work-in-progress commit (to use with
+	# fix-up-previous-commit)
+	work-in-progress = commit -a -m 'WIP'
+	wip = !git work-in-progress
 
 [difftool.latex]
      cmd = latexdiff "$LOCAL" "$REMOTE"
@@ -148,15 +148,18 @@
     untracked = cyan
 
 [diff]
-    # Detect copies as well as renames
-    renames = copies
+	# Use the slower but better patience diff algorithm
+	algorithm = patience
+	# Use new diff algorithm to make e.g. function diffs look better.
+	compactionheuristic = true
+	# Use a different colour for moved lines than added/modified ones
+	colorMoved = default
 
 [diff "bin"]
     # Use `hexdump` to diff binary files
     textconv = hexdump -v -C
 
 [help]
-
     # Automatically correct and execute mistyped commands
     autocorrect = 1
 
@@ -170,26 +173,25 @@
     # Make `git push` push relevant annotated tags when pushing branches out.
     followTags = true
 
+[commit]
+	# Show the diff as a comment in the commit message template.
+	verbose = true
+[tag]
+	# Sort tags by newest first
+	sort = -version:refname
+
 # URL shorthands
-
 [url "git@github.com:"]
-
     insteadOf = "gh:"
     pushInsteadOf = "github:"
     pushInsteadOf = "git://github.com/"
-
 [url "git://github.com/"]
-
     insteadOf = "github:"
-
 [url "git@gist.github.com:"]
-
     insteadOf = "gst:"
     pushInsteadOf = "gist:"
     pushInsteadOf = "git://gist.github.com/"
-
 [url "git://gist.github.com/"]
-
     insteadOf = "gist:"
 
 [include]
@@ -198,3 +200,6 @@
 	cookiefile = /home/$HOME/.gitcookies
 [pull]
 	ff = only
+[rerere]
+	# Store and re-use manual conflict resolution changes.
+	enabled = true
