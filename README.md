@@ -52,6 +52,7 @@ stow git -t ~/.config/
 stow htop -t ~/.config/
 stow nvim -t ~/.config/
 stow ranger -t ~/.config/
+stow vscode -t ~/.vscode/
 stow shell -t ~
 stow tmux -t ~/.config/ && ln -s ~/.config/tmux/tmux.conf ~/.tmux.conf
 stow yapf -t ~/.config/
@@ -76,6 +77,19 @@ ssh-add -K ~/.ssh/id_ed25519
 pbcopy < ~/.ssh/id_ed25519.pub
 ```
 ## Applications
+### Git
+Since I have .gitconfig under source control, the personal git user details are stored in an external file `~/.gituser`.
+
+```shell
+cat > ~/.gituser << EOF
+[user]
+	email = <Email>
+	name = <Name>
+[github]
+    user = <Username>
+EOF
+```
+
 ### Docker
 Docker desktop requires to run the GUI docker app first to initially link binaries and prepare docker for the first runtime.
 Run docker by using <CMD>+<space> and typing docker, authorize the application and adjust preferences to your liking.
