@@ -53,7 +53,7 @@ stow htop -t ~/.config/
 stow nvim -t ~/.config/
 stow ranger -t ~/.config/
 stow vscode -t ~/.vscode/
-stow shell -t ~
+stow shell -t ~/
 stow tmux -t ~/.config/ && ln -s ~/.config/tmux/tmux.conf ~/.tmux.conf
 stow yapf -t ~/.config/
 stow zsh -t ~/
