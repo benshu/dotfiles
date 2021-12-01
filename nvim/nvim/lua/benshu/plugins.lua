@@ -68,7 +68,7 @@ return require('packer').startup(function(use)
   use {
       'jremmen/vim-ripgrep',
       config = function()
-          vim.g['rg_command'] = 'gr --vimgrep -S' -- enable smartcase
+          vim.g['rg_command'] = 'rg --vimgrep -S' -- enable smartcase
           vim.g['rg_highlight'] = 'true'
           vim.g['rg_window_location'] = 'right'
       end
