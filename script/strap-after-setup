@@ -1,0 +1,4 @@
+#!/bin/sh
+# Run by Strap after installing Brewfile dependencies
+
+vscode/install-vscode-extensions
