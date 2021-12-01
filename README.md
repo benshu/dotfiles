@@ -57,6 +57,7 @@ stow shell -t ~/
 stow tmux -t ~/.config/ && ln -s ~/.config/tmux/tmux.conf ~/.tmux.conf
 stow yapf -t ~/.config/
 stow zsh -t ~/
+stow -d setup/macos/ brew -t ~
 ```
 
 1. Setup SSH KEY
@@ -77,6 +78,12 @@ ssh-add -K ~/.ssh/id_ed25519
 pbcopy < ~/.ssh/id_ed25519.pub
 ```
 ## Applications
+### MacOS Settings
+
+```shell
+TIME_ZONE=Asia/Jerusalem ./setup/macos/.macos
+```
+
 ### Git
 Since I have .gitconfig under source control, the personal git user details are stored in an external file `~/.gituser`.
 

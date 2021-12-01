@@ -24,6 +24,9 @@
 	# Output unicode characters (e.g. emoji).
 	quotepath = on
 
+[include]
+    path = ~/.gitlocal
+
 [diff]
    tool = meld
 
@@ -194,8 +197,6 @@
 [url "git://gist.github.com/"]
     insteadOf = "gist:"
 
-[include]
-    path = ~/.gituser
 [http]
 	cookiefile = /home/$HOME/.gitcookies
 [pull]
