@@ -28,7 +28,6 @@ alias gpc="gh pr checkout"
 alias h="history"
 alias j="jobs"
 alias gdd="git difftool -d"
-alias open="xdg-open"
 
 alias todo="$EDITOR ~/.todo.md"
 alias sexify="python -m autopep8 --in-place --aggressive --aggressive"
