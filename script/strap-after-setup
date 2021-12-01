@@ -2,6 +2,8 @@
 # Run by Strap after installing Brewfile dependencies
 
 # Enable authorizing sudo using TouchID
+echo "Enable authorizing sudo using TouchID"
 setup/macos/touchid-enable-pam-sudo
 
+echo "Installing VS Code extensions"
 vscode/install-vscode-extensions
