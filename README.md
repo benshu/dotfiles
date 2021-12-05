@@ -27,28 +27,13 @@ ln -s $PWD/setup/macos/Brewfile ~/.Brewfile
 HOMEBREW_CASK_OPTS="--no-quarantine" brew bundle install --file ~/.Brewfile
 ```
 
-1. Setup Shell and Terminal 
-Use your newly installed terminal - iterm2 / alacritty
-install oh-my-zsh
-```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-```
-
-Fetch and extract terminfo database:
-```
-curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz
-```
-Compile tmux terminfo using:
-```
-/usr/bin/tic -xe tmux-256color terminfo.src
-```
-
+## Stow Dotfiles
 1. Link dotfiles using stow
 For most applications `stow` is used to link the configuration files to the proper location.
 ```
 stow alacritty -t ~/.config/
 stow bash -t ~/
-stow git -t ~/.config/
+stow git -t ~/
 stow htop -t ~/.config/
 stow nvim -t ~/.config/
 stow ranger -t ~/.config/
@@ -60,6 +45,7 @@ stow zsh -t ~/
 stow -d setup/macos/ brew -t ~
 ```
 
+# SSH Setup
 1. Setup SSH KEY
 [https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent](Github SSH generation guide)
 
@@ -77,11 +63,30 @@ ssh-add -K ~/.ssh/id_ed25519
 ```
 pbcopy < ~/.ssh/id_ed25519.pub
 ```
+
 ## Applications
 ### MacOS Settings
 
 ```shell
 TIME_ZONE=Asia/Jerusalem ./setup/macos/.macos
+```
+
+## Terminal
+
+1. Setup Shell and Terminal 
+Use your newly installed terminal - iterm2 / alacritty
+install oh-my-zsh
+```
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+```
+
+Fetch and extract terminfo database:
+```
+curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz
+```
+Compile tmux terminfo using:
+```
+/usr/bin/tic -xe tmux-256color terminfo.src
 ```
 
 ### Git
