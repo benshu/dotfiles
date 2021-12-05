@@ -11,25 +11,25 @@ softwareupdate -ia
 sudo xcode-select --install
 ```
 
-1. Clone this repository
+2. Clone this repository
 ```
 git clone git@github.com:benshu/dotfiles.git
 ```
 
-1. Install [Homebrew](https://brew.sh)
+3. Install [Homebrew](https://brew.sh)
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-1. Install Applications Using Homebrew
+4. Install Applications Using Homebrew
 ```
 ln -s $PWD/setup/macos/Brewfile ~/.Brewfile
 HOMEBREW_CASK_OPTS="--no-quarantine" brew bundle install --file ~/.Brewfile
 ```
 
-## Stow Dotfiles
+## Link dotfiles
 1. Link dotfiles using stow
-For most applications `stow` is used to link the configuration files to the proper location.
+GNU stow is used to link the configuration files to the proper location.
 ```
 stow alacritty -t ~/.config/
 stow bash -t ~/
@@ -47,7 +47,7 @@ stow -d setup/macos/ brew -t ~
 
 # SSH Setup
 1. Setup SSH KEY
-[https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent](Github SSH generation guide)
+[Github SSH generation guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
 ```
 ssh-keygen -t ed25519 -C "your_email@example.com"
@@ -59,7 +59,7 @@ Host *
 EOF
 ssh-add -K ~/.ssh/id_ed25519
 ```
-1. Update external services with newly generated public key [https://github.com/settings/keys](Github SSH Keys Settings)
+2. Update external services with newly generated public key [Github SSH Keys Settings](https://github.com/settings/keys)
 ```
 pbcopy < ~/.ssh/id_ed25519.pub
 ```
@@ -90,10 +90,10 @@ Compile tmux terminfo using:
 ```
 
 ### Git
-Since I have .gitconfig under source control, the personal git user details are stored in an external file `~/.gituser`.
+Since I have .gitconfig under source control, the personal git user details are stored in an external file `~/.gitlocal`.
 
 ```shell
-cat > ~/.gituser << EOF
+cat > ~/.gitlocal << EOF
 [user]
 	email = <Email>
 	name = <Name>
@@ -112,6 +112,7 @@ Link python3 binary to python command
 ```
 ln -s -f /usr/local/bin/python3 /usr/local/bin/python
 ```
+
 ### Neovim
 1. Install packer for neovim package management
 ```
