@@ -104,13 +104,7 @@ export FZF_DEFAULT_OPTS='--layout=reverse --inline-info'
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-export QT_PKG_CONFIG=true
-
-export PATH=~/.nvm/versions/node/v15.2.0/bin/:$PATH
-export NVM_DIR=~/.nvm
-
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export TMUXP_CONFIGDIR=$HOME/.config/tmux/sessions
 
 if [[ "$ZPROF" = true ]]; then
   zprof
