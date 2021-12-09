@@ -1,0 +1,3 @@
+--target ~/
+--dir ~/dotfiles/bash/
+--ignore .stowrc

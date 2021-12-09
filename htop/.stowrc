@@ -1,0 +1,3 @@
+--target ~/.config/
+--dir ~/dotfiles/htop
+--ignore .stowrc

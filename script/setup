@@ -16,40 +16,19 @@ DOTFILESDIR=$(pwd -P)
 
 if [ $MACOS ]
 then
-  VSCODE="$HOME/Library/Application Support/Code/User"
+  export VSCODE="$HOME/Library/Application Support/Code/User"
 elif [ $LINUX ]
 then
-  VSCODE="$HOME/.config/Code/User"
+  export VSCODE="$HOME/.config/Code/User"
 fi
 
 for DOTFILE in *; do
-  HOMEFILE="$HOME/.$DOTFILE"
-  [ -d $DOTFILE ] && DOTFILE="$DOTFILE/"
-  DIRFILE="$DOTFILESDIR/$DOTFILE"
-
-  # Don't try to install documentation/script files
-  echo $DOTFILE | egrep -q '(^script/$|\.txt$|\.md$)' && continue
-
-  # Fixup VSCode settings path
-  echo $DOTFILE | grep -q 'vscode-settings' &&
-       HOMEFILE="$VSCODE/settings.json" &&
-       mkdir -p "$VSCODE"
-
-  # Remove .sh extensions
-  echo $DOTFILE | grep -q '\.sh' &&
-       HOMEFILE="$HOME/.$(echo $DOTFILE | sed -e 's/\.sh//')"
-
-  if [ -L "$HOMEFILE" ] && ! [ -d $DOTFILE ]
+  if [ -d $DOTFILE ] && [ -f "$DOTFILE/.stowrc" ]
   then
-    echo "git good" ln -sfv "$DIRFILE" "$HOMEFILE"
+      pushd $DOTFILE
+      stow .
+      popd
   else
-    echo "git good" rm -rv "$HOMEFILE" 2>/dev/null
-    echo "git good" ln -sv "$DIRFILE" "$HOMEFILE"
+      echo "nothing to stow in $DOTFILE"
   fi
 done
-
-HOMEDOTFILES="$HOME/dotfiles"
-if [ "$DOTFILESDIR" != "$HOMEDOTFILES" ]
-then
-  echo "git good" ln -sf "$DOTFILESDIR" "$HOMEDOTFILES"
-fi

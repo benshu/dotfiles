@@ -27,23 +27,22 @@ ln -s $PWD/setup/macos/Brewfile ~/.Brewfile
 HOMEBREW_CASK_OPTS="--no-quarantine" brew bundle install --file ~/.Brewfile
 ```
 
-## Link dotfiles
-1. Link dotfiles using stow
-GNU stow is used to link the configuration files to the proper location.
+5. Run setup script
+| This will run automaticall by [Strap](https://github.com/benshu/strap) hook
 ```
-stow alacritty -t ~/.config/
-stow bash -t ~/
-stow git -t ~/
-stow htop -t ~/.config/
-stow nvim -t ~/.config/
-stow ranger -t ~/.config/
-stow vscode -t ~/.vscode/
-stow shell -t ~/
-stow tmux -t ~/.config/ && ln -s ~/.config/tmux/tmux.conf ~/.tmux.conf
-stow yapf -t ~/.config/
-stow zsh -t ~/
-stow -d setup/macos/ brew -t ~
+script/setup
 ```
+
+
+## Link dotfiles manually
+GNU stow is used to link the configuration files to their proper location.
+
+Each configuration pacakge has a `.stowrc` resource file to specify the target dir, stow dir, and ignored files.
+To stow a specific pacakage:
+```
+cd <package-dir> && stow .
+```
+This allows for a consistent behaviour of all different configurations by utilizing `.stowrc`
 
 # SSH Setup
 1. Setup SSH KEY

@@ -1,0 +1,3 @@
+--target $VSCODE
+--dir ~/dotfiles/vscode/vscode/
+--ignore .stowrc

@@ -1,0 +1,3 @@
+--target ~/.config
+--dir ~/dotfiles/starship
+--ignore .stowrc

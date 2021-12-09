@@ -1,0 +1,3 @@
+--target ~/.config/
+--dir ~/dotfiles/tmux
+--ignore .stowrc
