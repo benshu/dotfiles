@@ -1,34 +1,38 @@
 # Benshu's dotfiles / MacOS
 
 ## Bootstrap
+### Automatic Bootstrap
+Automatic bootstrapping is possible by adhering to the [Strap](https://github.com/mikeMcquaid/strap) hooks (`script/setup` and `script/strap-after-setup`)
+
+### Manual Bootstrap
 1. Update to latest MacOS
 ```
 softwareupdate -ia
 ```
 
-1. Instal XCode Command Line Tools
+2. Instal XCode Command Line Tools
 ```
 sudo xcode-select --install
 ```
 
-2. Clone this repository
+3. Clone this repository
 ```
 git clone git@github.com:benshu/dotfiles.git
 ```
 
-3. Install [Homebrew](https://brew.sh)
+4. Install [Homebrew](https://brew.sh)
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-4. Install Applications Using Homebrew
+5. Install Applications Using Homebrew
 ```
 ln -s $PWD/setup/macos/Brewfile ~/.Brewfile
 HOMEBREW_CASK_OPTS="--no-quarantine" brew bundle install --file ~/.Brewfile
 ```
 
-5. Run setup script
-| This will run automaticall by [Strap](https://github.com/benshu/strap) hook
+6. Run setup script
+| This will run automatically by [Strap](https://github.com/benshu/strap) hook
 ```
 script/setup
 ```
@@ -37,8 +41,8 @@ script/setup
 ## Link dotfiles manually
 GNU stow is used to link the configuration files to their proper location.
 
-Each configuration pacakge has a `.stowrc` resource file to specify the target dir, stow dir, and ignored files.
-To stow a specific pacakage:
+Each configuration package has a `.stowrc` resource file to specify the target directory, stow directory, and ignored files.
+To stow a specific package:
 ```
 cd <package-dir> && stow .
 ```
@@ -73,7 +77,6 @@ TIME_ZONE=Asia/Jerusalem ./setup/macos/.macos
 ## Terminal
 
 1. Setup Shell and Terminal 
-Use your newly installed terminal - iterm2 / alacritty
 install oh-my-zsh
 ```
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"

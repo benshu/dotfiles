@@ -21,7 +21,7 @@ vim.o.wildignore = table.concat({
      ','
  )
 
-vim.o.wildmode = 'longest:full'
+vim.o.wildmode = 'longest:list:full'
 vim.o.wildignorecase = true
 
 vim.o.wildoptions = 'pum,tagfile'
@@ -41,7 +41,7 @@ vim.o.equalalways    = false -- I don't like my windows changing all the time
 vim.o.splitright     = true  -- Prefer windows splitting to the right
 vim.o.splitbelow     = true  -- Prefer windows splitting to the bottom
 vim.o.updatetime     = 1000  -- Make updates happen faster
-vim.o.hlsearch       = true  -- I wouldn't use this without my DoNoHL function
+vim.o.hlsearch       = true
 vim.o.scrolloff      = 5
 vim.o.autoindent     = true
 vim.o.cindent        = true
@@ -208,7 +208,7 @@ for _, lsp in ipairs(servers) do
 end
 
 nvim_lsp.pyright.setup{
-    cmd = { "/home/hagay/.cache/nvim/lspconfig/pyright/node_modules/.bin/pyright-langserver", "--stdio" },
+    -- cmd = { "/home/hagay/.cache/nvim/lspconfig/pyright/node_modules/.bin/pyright-langserver", "--stdio" },
     on_attach = on_attach,
 }
 
@@ -226,7 +226,7 @@ else
 end
 
 -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
-local sumneko_root_path = vim.fn.stdpath('cache')..'/lspconfig/sumneko_lua/lua-language-server'
+local sumneko_root_path = vim.fn.stdpath('data')..'/lsp_servers/sumneko_lua/extension/server'
 local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
 nvim_lsp.sumneko_lua.setup {
   cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};

@@ -63,7 +63,7 @@ return require('packer').startup(function(use)
   -- LSP {{{
   use 'neovim/nvim-lspconfig'
   use 'wbthomason/lsp-status.nvim'
-  use 'anott03/nvim-lspinstall'
+  use 'williamboman/nvim-lsp-installer'
   -- }}}
   use {
       'jremmen/vim-ripgrep',
