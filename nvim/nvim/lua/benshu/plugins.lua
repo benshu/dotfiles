@@ -1,51 +1,109 @@
 -- Bootstrap packer.nvim [https://github.com/wbthomason/packer.nvim]
 local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  packer_bootstrap = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  P = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
 vim.cmd [[packadd packer.nvim]]
 vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
+augroup packer_user_config
+autocmd!
+autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+augroup end
 ]])
 
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
-  use {'tpope/vim-dispatch', opt = true, cmd = {'Dispatch', 'Make', 'Focus', 'Start'}}
-  use {'andymass/vim-matchup', event = 'VimEnter *'}
   use {
-    'w0rp/ale',
-    ft = {'sh', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'racket', 'vim', 'tex', 'py', 'yaml', 'lua'},
-    cmd = 'ALEEnable',
-    config = 'vim.cmd[[ALEEnable]]'
-  }
-  use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview'}
-  use {
-	  'nvim-telescope/telescope.nvim',
-	  requires = {
-          {'nvim-lua/popup.nvim'},
-          {'nvim-lua/plenary.nvim'}
-      }
+    'tpope/vim-dispatch',
+    opt = true,
+    cmd = {'Dispatch', 'Make', 'Focus', 'Start'},
   }
   use {
-      'nvim-telescope/telescope-fzf-native.nvim',
-      run = 'make' ,
-      config = function()
-          require('telescope').load_extension('gh')
-      end
+    'andymass/vim-matchup',
+    event = 'VimEnter *',
   }
   use {
-      'nvim-telescope/telescope-github.nvim',
-      config = function()
-          require('telescope').load_extension('gh')
-      end
+    'iamcco/markdown-preview.nvim',
+    run = 'cd app && yarn install',
+    cmd = 'MarkdownPreview',
   }
-  use {'nvim-treesitter/nvim-treesitter', opt = true}
-  use {'pechorin/any-jump.vim', opt = true}
+
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = {
+      {'nvim-lua/popup.nvim'},
+      {'nvim-lua/plenary.nvim'}
+    }
+  }
+  use {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    run = 'make' ,
+  }
+  use {
+    'nvim-telescope/telescope-github.nvim',
+    config = function()
+      require('telescope').load_extension('gh')
+      require('telescope').load_extension('emoji')
+      require('telescope').load_extension('fzf')
+    end
+  }
+  use { "nvim-telescope/telescope-file-browser.nvim" }
+
+  use { "camgraff/telescope-tmux.nvim" }
+  use { "xiyaowong/telescope-emoji.nvim" }
+
+  use { "pwntester/octo.nvim" }
+
+  use { 'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
+    setup = {
+      highlight = {
+        enable = true,
+      },
+      incremental_selection = {
+        enable = true,
+      },
+      textobjects = {
+        enable = true,
+      },
+    },
+    config = function()
+        require'nvim-treesitter.configs'.setup {
+          ensure_installed = "maintained",
+          sync_install = false,
+          ignore_install = {},
+          highlight = {
+            enable = true,
+            disable = {},
+
+            -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+            -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+            -- Using this option may slow down your editor, and you may see some duplicate highlights.
+            -- Instead of true it can also be a list of languages
+            additional_vim_regex_highlighting = false,
+          },
+          incremental_selection = {
+            enable = true,
+            keymaps = {
+              init_selection = "gnn",
+              node_incremental = "grn",
+              scope_incremental = "grc",
+              node_decremental = "grm",
+            },
+          },
+          textobjects = {
+            enable = true,
+          },
+        }
+    end
+  }
+  use { 'nvim-treesitter/playground' }
+
+  use { 'kyazdani42/nvim-web-devicons' }
+
+  use { 'pechorin/any-jump.vim' }
   use {
       "folke/which-key.nvim",
       config = function()
@@ -61,16 +119,25 @@ return require('packer').startup(function(use)
       end
   }
   use {
-    'nvim-lua/completion-nvim',
-    requires = {
-        { 'hrsh7th/vim-vsnip', opt = true },
-        { 'hrsh7th/vim-vsnip-integ', opt = true },
-    }
+      'nvim-lua/completion-nvim',
+      requires = {
+          { 'hrsh7th/vim-vsnip', opt = true },
+          { 'hrsh7th/vim-vsnip-integ', opt = true },
+      }
   }
+  -- Debug adapter protocol
+  use "mfussenegger/nvim-dap"
+  use "rcarriga/nvim-dap-ui"
+  use "theHamsta/nvim-dap-virtual-text"
+  use "mfussenegger/nvim-dap-python"
+  use "nvim-telescope/telescope-dap.nvim"
+
   -- LSP {{{
   use 'neovim/nvim-lspconfig'
   use 'wbthomason/lsp-status.nvim'
   use 'williamboman/nvim-lsp-installer'
+  use 'RishabhRD/popfix'
+  use 'RishabhRD/nvim-lsputils'
   -- }}}
   use {
       'jremmen/vim-ripgrep',
@@ -93,24 +160,23 @@ return require('packer').startup(function(use)
       end
   }
 
-  -- use {'pwntester/octo.nvim',}
   use { 'norcalli/nvim-colorizer.lua',
-      config = function()
-          require('colorizer').setup()
-      end
-  }
-  use {'dracula/vim', as = 'dracula'}
+  config = function()
+      require('colorizer').setup()
+  end
+}
+use {'dracula/vim', as = 'dracula'}
 
-  use 'godlygeek/tabular'        -- Quickly align text by pattern
-  use 'tpope/vim-fugitive'       -- Git
-  use 'tpope/vim-surround'       -- Surround text objects easily
-  use 'tpope/vim-commentary'     -- Easily comment out lines or objects
-  use 'tpope/vim-repeat'         -- Repeat actions better
-  use 'tpope/vim-abolish'        -- Cool things with words!
-  use 'tpope/vim-characterize'
-  use 'AndrewRadev/splitjoin.vim'
-  use 'christoomey/vim-tmux-navigator'
-  use 'kdheepak/lazygit.nvim'
-  use 'RishabhRD/popfix'
-  use 'RishabhRD/nvim-lsputils'
+use 'godlygeek/tabular'        -- Quickly align text by pattern
+use 'tpope/vim-fugitive'       -- Git
+use 'tpope/vim-surround'       -- Surround text objects easily
+use 'tpope/vim-commentary'     -- Easily comment out lines or objects
+use 'tpope/vim-repeat'         -- Repeat actions better
+use 'tpope/vim-abolish'        -- Cool things with words!
+use 'tpope/vim-characterize'
+use 'AndrewRadev/splitjoin.vim'
+use 'christoomey/vim-tmux-navigator'
+use 'kdheepak/lazygit.nvim'
+use 'TimUntersberger/neogit'
+
 end)

@@ -92,8 +92,8 @@ vim.o.termguicolors        = true
 vim.wo.relativenumber = true  -- Show line numbers
 vim.wo.number         = true  -- But show the actual number for the line we're on
 vim.wo.wrap           = false
-vim.wo.foldmethod     = 'marker'
-vim.wo.foldlevel      = 0
+vim.wo.foldmethod     = 'expr'
+vim.wo.foldexpr       = 'nvim_treesitter#foldexpr()'
 
 vim.g['far#debug'] = 0
 vim.g['completion_trigger_on_delete'] = 1
@@ -111,14 +111,13 @@ vim.g['netrw_liststyle'] = 3
 
 vim.api.nvim_set_keymap('n', '<Up>', '<C-y>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<Down>', '<C-e>', { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('n', '<Esc><Esc>', '<Esc>:nohlsearch<CR><Esc>', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('n', '<leader>ft', '<cmd>lua require("telescope.builtin").builtin()<cr>', { noremap = true, silent = true })
-
 vim.api.nvim_set_keymap('n', '<C-p>', '<cmd>lua require("telescope.builtin").git_files()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>gf', '<cmd>lua require("telescope.builtin").git_files()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fw', '<cmd>lua require("telescope.builtin").grep_string()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<cr>', { noremap = true, silent = true })
 
@@ -130,6 +129,17 @@ vim.api.nvim_set_keymap('n', '<leader>gs', '<cmd>lua require("telescope.builtin"
 vim.api.nvim_set_keymap('n', '<leader>ghi', '<cmd>lua require("telescope.builtin").gh_issues()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>pr', '<cmd>lua require("telescope.builtin").gh_pull_request()<cr>', { noremap = true, silent = true })
 
+vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>Telescope tmux sessions<cr>', { noremap = true, silent = true })
+
+-- LSP utils setup
+vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
 
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -224,13 +234,3 @@ lsp_installer.on_server_ready(function(server)
     -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
     server:setup(opts)
 end)
-
--- LSP utils setup
-vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
-vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
-vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
-vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
-vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
-vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
-vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
-vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
