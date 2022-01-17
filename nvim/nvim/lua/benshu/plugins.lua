@@ -40,19 +40,18 @@ return require('packer').startup(function(use)
   use {
     'nvim-telescope/telescope-fzf-native.nvim',
     run = 'make' ,
+    config = function()
+      require('telescope').load_extension('fzf')
+    end
   }
   use {
     'nvim-telescope/telescope-github.nvim',
     config = function()
       require('telescope').load_extension('gh')
-      require('telescope').load_extension('emoji')
-      require('telescope').load_extension('fzf')
     end
   }
-  use { "nvim-telescope/telescope-file-browser.nvim" }
-
   use { "camgraff/telescope-tmux.nvim" }
-  use { "xiyaowong/telescope-emoji.nvim" }
+  use { "nvim-telescope/telescope-file-browser.nvim" }
 
   use { "pwntester/octo.nvim" }
 
@@ -77,7 +76,6 @@ return require('packer').startup(function(use)
           highlight = {
             enable = true,
             disable = {},
-
             -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
             -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
             -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -173,6 +171,18 @@ use 'tpope/vim-surround'       -- Surround text objects easily
 use 'tpope/vim-commentary'     -- Easily comment out lines or objects
 use 'tpope/vim-repeat'         -- Repeat actions better
 use 'tpope/vim-abolish'        -- Cool things with words!
+use {
+    'windwp/nvim-spectre',
+    config = function()
+        vim.api.nvim_set_keymap('n', '<leader>S', '<cmd>lua require("spectre").open()<CR>', { noremap = true, silent = true })
+        --  search current word
+        vim.api.nvim_set_keymap('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('v', '<leader>s', '<cmd>lua require("spectre").open_visual()<CR>', { noremap = true, silent = true })
+        --  search in current file
+        vim.api.nvim_set_keymap('n', '<leader>sp', 'viw <cmd>lua require("spectre").open_file_search()<cr>', { noremap = true, silent = true })
+    end
+}
+
 use 'tpope/vim-characterize'
 use 'AndrewRadev/splitjoin.vim'
 use 'christoomey/vim-tmux-navigator'
