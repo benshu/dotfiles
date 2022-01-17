@@ -34,7 +34,7 @@ fi
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -64,8 +64,10 @@ plugins=(git git-extras python pip tmux docker vi-mode history-substring-search 
 # User configuration
 
 export LC_ALL=en_US.UTF-8
-# export PATH=$HOME:$HOME/.local/bin:/bin:/usr/local/bin:/usr/local/sbin:$HOME/.cargo/bin/:$HOME/.gem/ruby/2.5.0/bin:$HOME/.npm/bin/
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="$PATH:${KREW_ROOT:-$HOME/.krew}/bin"
+export PATH="$PATH:/usr/local/opt/openjdk/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -95,16 +97,18 @@ source ~/.exports
 source ~/.functions
 source ~/.extra
 
+
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_DEFAULT_OPTS='--layout=reverse --inline-info'
-
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 export TMUXP_CONFIGDIR=$HOME/.config/tmux/sessions
+
+. /usr/local/opt/asdf/libexec/asdf.sh
 
 if [[ "$ZPROF" = true ]]; then
   zprof
