@@ -110,6 +110,29 @@ export TMUXP_CONFIGDIR=$HOME/.config/tmux/sessions
 
 . /usr/local/opt/asdf/libexec/asdf.sh
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+function brew_persist() {
+  if brew info --cask --json=v2 "$1" > /dev/null 2>&1; then
+    # If the package is a cask
+    brew install --cask "$1" && echo "cask \"$1\"" >> ~/.Brewfile
+  elif brew info --json=v2 "$1" > /dev/null 2>&1; then
+    # If the package is a regular formula
+    brew install "$1" && echo "brew \"$1\"" >> ~/.Brewfile
+  else
+    echo "Error: Package '$1' not found as a formula or cask."
+  fi
+}
+
+alias brew_persist='brew_persist'
+alias nvim-ks='NVIM_APPNAME="nvim-ks" nvim'
+
+pip_add() {
+    pip install "$1" && pip freeze | grep "$1" >> requirements.txt
+}
+
 if [[ "$ZPROF" = true ]]; then
   zprof
 fi

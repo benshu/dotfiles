@@ -1,6 +1,4 @@
 tap "homebrew/bundle"
-tap "homebrew/cask-fonts"
-tap "homebrew/core"
 tap "homebrew/services"
 
 
@@ -51,3 +49,7 @@ cask "qlmarkdown"
 cask "qlstephen"
 cask "spotify"
 cask "visual-studio-code"
+cask "obsidian"
+brew "cursor"
+brew "pandoc"
+brew "libreoffice"

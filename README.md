@@ -52,15 +52,16 @@ This allows for a consistent behaviour of all different configurations by utiliz
 1. Setup SSH KEY
 [Github SSH generation guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
+Use the following command to generate a ssh key with no passphrase, to include a passphrase, make sure to review the originla link.
 ```
-ssh-keygen -t ed25519 -C "your_email@example.com"
-eval "($ssh-agent -s)"
+ssh-keygen -t ed25519 -C "mail@mail.com"
+eval "$(ssh-agent -s)"
 echo << EOF > ~/.ssh/config
 Host *
   AddKeysToAgent yes
   IdentityFile ~/.ssh/id_ed25519
 EOF
-ssh-add -K ~/.ssh/id_ed25519
+ssh-add ~/.ssh/id_ed25519
 ```
 2. Update external services with newly generated public key [Github SSH Keys Settings](https://github.com/settings/keys)
 ```

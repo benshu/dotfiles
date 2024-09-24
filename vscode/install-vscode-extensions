@@ -4,7 +4,7 @@ set -e
 if ! command -v code >/dev/null
 then
   echo "Install VS Code first!" >&2
-  exit 1
+  exit
 fi
 
 EXTENSIONS="$(code --list-extensions)"

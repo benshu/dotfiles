@@ -1,5 +1,7 @@
 #!/bin/sh
 
+mkdir -p ~/.config
+
 if [ -L "$0" ]
 then
   SCRIPTSETUP="$(readlink "$0")"
@@ -17,16 +19,42 @@ DOTFILESDIR=$(pwd -P)
 if [ $MACOS ]
 then
   export VSCODE="$HOME/Library/Application Support/Code/User"
+  mkdir -p $VSCODE
 elif [ $LINUX ]
 then
   export VSCODE="$HOME/.config/Code/User"
+fi
+
+# Check if 'stow' is installed
+if ! command -v stow &> /dev/null
+then
+    echo "'stow' is not installed. Installing using Homebrew..."
+    
+    # Check if Homebrew is installed
+    if ! command -v brew &> /dev/null
+    then
+        echo "Homebrew is not installed. Please install Homebrew first."
+        exit 1
+    fi
+    
+    # Install stow using Homebrew
+    brew install stow
+    
+    if [ $? -eq 0 ]; then
+        echo "'stow' has been successfully installed."
+    else
+        echo "Failed to install 'stow'."
+        exit 1
+    fi
+else
+    echo "'stow' is already installed."
 fi
 
 for DOTFILE in *; do
   if [ -d $DOTFILE ] && [ -f "$DOTFILE/.stowrc" ]
   then
       pushd $DOTFILE
-      stow .
+      stow --ignore=\.DS_Store .
       popd
   else
       echo "nothing to stow in $DOTFILE"
