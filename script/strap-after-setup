@@ -1,5 +1,8 @@
 #!/bin/sh
 # Run by Strap after installing Brewfile dependencies
+#
+echo "Enable keyboard key reapeat"
+defaults write -g ApplePressAndHoldEnabled -bool false
 
 # Enable authorizing sudo using TouchID
 echo "Enable authorizing sudo using TouchID"
